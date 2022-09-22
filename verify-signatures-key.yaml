@@ -1,0 +1,27 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-image
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: check-signatures
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      context:
+      - name: keys
+        configMap:
+          name: keys
+          namespace: default
+      verifyImages:
+      - imageReferences:
+        - "ghcr.io/chipzoller/busybox*"
+        required: true
+        attestors:
+        - count: 1
+          entries:
+          - keys: 
+              publicKeys: "{{ keys.data.production }}"
