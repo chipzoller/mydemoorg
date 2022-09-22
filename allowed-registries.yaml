@@ -1,19 +1,19 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: restrict-image-registries
+  name: org-allowed-registries
 spec:
   validationFailureAction: enforce
   background: true
   rules:
-  - name: validate-registries
+  - name: org-registries
     match:
       any:
       - resources:
           kinds:
           - Pod
     validate:
-      message: "Unknown image registry."
+      message: "Images may only come from ghcr.io or harbor2.zoller.com."
       pattern:
         spec:
           containers:
