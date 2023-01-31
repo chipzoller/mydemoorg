@@ -4,6 +4,7 @@ metadata:
   name: busybox
   labels:
     app: busybox
+    foo: biz
 spec:
   replicas: 1
   selector:
